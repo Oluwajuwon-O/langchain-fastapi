@@ -15,7 +15,7 @@ def fetch_ip_info(ip_address : str) -> str:
         return data
 
 ip_info_tool = StructuredTool.from_function(func= fetch_ip_info, 
-                                            name= 'IP adress info',
+                                            name= 'fetch information on the IP address supplied',
                                             description= 'fetch ip address information from ipapi.co',
                                             args_schema= IPInfo, 
                                             return_direct= True)
