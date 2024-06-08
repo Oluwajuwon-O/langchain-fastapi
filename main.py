@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 import uvicorn
 
+
 # Load environment variables
 load_dotenv()
 
@@ -35,7 +36,6 @@ class WeatherAPI:
 # Initialize the WeatherAPI with the API key from environment variable
 weather_api = WeatherAPI(os.environ['OPENWEATHER_API_KEY'])
 
-
     
 # Function to fetch weather information using WeatherAPI
 def fetch_weather_info(city):
@@ -55,11 +55,11 @@ sql_tool = QuerySQLDataBaseTool(db=db, llm= llm)
  
 
 tools = [weather_tool, sql_tool]
-agent = initialize_agent(tools, llm, agent='zero-shot-react-description',verbose=True)
+agent = initialize_agent(tools, llm, agent='zero-shot-react-description', verbose=True)
 
     
 # Invoke the agent to fetch weather information for London
-@app.post('/question')
+@app.get('/question')
 def prompt(question: str):
     result = agent.invoke(question)
     return {'output':result}
