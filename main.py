@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
-
+# import modules and libraries
 from langchain_openai import ChatOpenAI
 from langchain.agents import initialize_agent
 from dotenv import load_dotenv
@@ -15,26 +13,26 @@ from tools.math_tool import math_tool
 # Load environment variables
 load_dotenv()
 
-# load fastapi
+# Initialize FastAPI application
 app = FastAPI()
 
-# instantiate llm
+# Instantiate the language model 
 llm = ChatOpenAI(model='gpt-3.5-turbo', temperature=0.5)
 
-# define tools
-tools = [weather_info_tool,ip_info_tool,sql_tool,math_tool]
+# Define the tools to be used by the agent
+tools = [weather_info_tool, ip_info_tool, sql_tool, math_tool]
+
+# Initialize the agent with the defined tools and the language model
 agent = initialize_agent(tools, llm, agent='zero-shot-react-description', verbose=True)
 
 
-# Invoke the agent to fetch weather information for London
+# Define an endpoint 
 @app.get('/question')
 def prompt(question: str):
+    # Invoke the agent with the provided question
     result = agent.invoke(question)
-    return {'output':result}
+    return {'output': result}
 
-# prompt('How many suppliers does northwind store have?')
+# Entry point for running the FastAPI application with uvicorn
 if __name__ == '__main__':
-    uvicorn.run(app, host ='127.0.0.1', port= 8000)
-    
-    
-    
+    uvicorn.run(app, host='127.0.0.1', port=8000)
